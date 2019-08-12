@@ -100,9 +100,11 @@
             <Row class="main" type="flex" :gutter="5">
               <Col span="7" class="left">
                 <ss_data ref="ss_data"></ss_data>
+                <warning ref="warning"></warning>
               </Col>
               <Col span="10" class="mid">
-                <ss_data></ss_data>
+                <!-- <ss_data></ss_data> -->
+                <map1></map1>
               </Col>
               <Col span="7" class="right">
                 <ss_data></ss_data>
@@ -117,11 +119,15 @@
 
 <script>
 // @ is an alias to /src
-import ss_data from "../components//ss_data";
-import { mapActions } from "vuex";
+import ss_data from "../components/ss_data";
+import warning from "../components/warning";
+import map from "../components/map";
+import { mapActions, mapMutations } from "vuex";
 export default {
   components: {
-    ss_data: ss_data
+    ss_data: ss_data,
+    warning: warning,
+    map1: map
   },
   created() {
     this.one_data();
@@ -139,11 +145,15 @@ export default {
   },
   methods: {
     ...mapActions(["collector"]),
+    ...mapMutations(["gserial"]),
     // 选择网关
     select_gateway(a) {
       // this.model7 = a;
       if (!a) return false;
       this.$refs.ss_data.one_data(a);
+
+      // warning
+      this.gserial(a);
     },
     // 获取网关下采集器
     async collector_fn() {
@@ -184,8 +194,15 @@ export default {
       this.cityList1 = this.cityList[0].gateWays;
       this.model7 = this.cityList1[0].serial + "";
       this.select_station(res.datas[0].id);
-
+      this.gserial(this.cityList1[0].serial);
+      // console.log(this.$refs.warning);
+      // 启动子组件
+      this.fn();
       // console.log(this.cityList1);
+    },
+    fn() {
+      // 调用组件方法加载第一次报警信息
+      this.$refs.warning.one_data();
     }
   }
 };
@@ -228,7 +245,9 @@ export default {
   margin: 0 auto;
   margin-right: 20px;
 }
-.left {
-  height: 30%;
+.left,
+.mid,
+.right {
+  height: 100%;
 }
 </style>

@@ -77,10 +77,22 @@ img {
 
 .ivu-card-extra {
   width: 25% !important;
+  margin-right: 15px !important;
 }
-.i_card .ivu-card-body {
+.ss_card .ivu-card-body {
   overflow: auto;
-  height: 73% !important;
+  height: 88% !important;
+}
+.warning_card .ivu-card-body {
+  overflow: auto;
+  /* height: 88% !important; */
+  max-height: 84%;
+}
+.warning_dialog .ivu-table-cell {
+  padding-top: 4px;
+}
+.warning_dialog .ivu-modal-body {
+  padding-top: 5px;
 }
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
 .ivu-card-body::-webkit-scrollbar {
@@ -102,3 +114,25 @@ img {
   -webkit-box-shadow: inset 0 0 6px rgba(83, 225, 247, 0.3);
   background-color: rgb(19, 205, 226);
 }
+.contract {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+}
+
+.top_row {
+  margin-bottom: 5px;
+}
+/* .ivu-modal-body,
+.ivu-modal-content {
+  height: 100%;
+  width: 100%;
+} */
+/* #main > div {
+  width: 100% !important;
+}
+
+canvas {
+  width: 100% !important;
+} */
