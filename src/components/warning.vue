@@ -1,9 +1,10 @@
 <template>
-  <Card style="width:100%;height:50%" class="i_card warning_card">
+  <Card style="width:100%;" class="i_card warning_card">
     <p slot="title">
       <Icon size="24" type="ios-calendar"/>报警日志
       <Icon class="contract" size="20" type="ios-expand" @click="modal_full"/>
     </p>
+    <Spin v-if="loading" fix>暂无数据查看...</Spin>
     <ul class="warning_ul">
       <li :key="k" v-for="(item,k) in warning_data.datas">
         <p class="clearfix">
@@ -16,7 +17,12 @@
       </li>
     </ul>
     <!-- 点击提示信息 报警 -->
-    <Modal footer-hide title="信息提示" v-model="war_msg_box" class-name="vertical-center-modal">
+    <Modal
+      footer-hide
+      title="信息提示"
+      v-model="war_msg_box"
+      class-name="vertical-center-modal warning_tip"
+    >
       <p>编号: {{warning_obj.id}}</p>
       <Divider/>
       <p>所属网关: {{warning_obj.gateWayName}}</p>
@@ -43,7 +49,7 @@
         <Col span>
           <Select
             @on-clear="clear"
-            @change="select_gateway_warning"
+            @on-change="select_gateway_warning"
             clearable
             v-model="gateway_serial"
             size="small"
@@ -61,7 +67,13 @@
         </Col>
       </Row>
       <!-- 数据展示表格 -->
-      <Table border :columns="columns12" :data="warning_full_msg.datas">
+      <Table
+        :disabled-hover="true"
+        :loading="loading_table"
+        border
+        :columns="columns12"
+        :data="warning_full_msg.datas"
+      >
         <!-- <template slot-scope="{ row }" slot="name"> -->
         <!-- <strong>{{ row.name }}</strong> -->
         <!-- </template> -->
@@ -123,10 +135,13 @@
           </Select>
         </FormItem>
         <FormItem label="最大值">
-          <Input v-model="set_warning_form.tMax"></Input>
+          <InputNumber v-model="set_warning_form.tMax"></InputNumber>
+          <!-- <Input v-model="set_warning_form.tMax"></Input> -->
         </FormItem>
         <FormItem label="最小值">
-          <Input v-model="set_warning_form.tMin"></Input>
+          <InputNumber v-model="set_warning_form.tMin"></InputNumber>
+
+          <!-- <Input v-model="set_warning_form.tMin"></Input> -->
         </FormItem>
       </Form>
       <div class="demo-drawer-footer">
@@ -146,6 +161,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       war_msg_box: false,
       //   当前查看的报警信息
       warning_obj: {},
@@ -192,7 +208,8 @@ export default {
         zIndex: 999
       },
       // 设置报警信息表单
-      set_warning_form: {}
+      set_warning_form: {},
+      loading_table: true
     };
   },
   computed: {
@@ -201,7 +218,8 @@ export default {
       "user_gateway_list",
       "warning_full_msg",
       "region_List",
-      "ele_list"
+      "ele_list",
+      "gserial"
     ])
   },
   methods: {
@@ -209,7 +227,6 @@ export default {
       "warning",
       "warning_all",
       "user_gateway",
-      "warning_all",
       "region_list",
       "ele_actions"
     ]),
@@ -230,8 +247,8 @@ export default {
       // 弹出数据表格
       this.war_full_box = true;
 
-      // console.log(res);
-      // console.log(this.set_warning_form);
+      //
+      //
     },
     // 选择区域变化
     async select_device(a) {
@@ -240,11 +257,11 @@ export default {
     },
     // 选择元素框变化
     select_type(a) {
-      // console.log(a);
+      //
       var obj = this.ele_list.filter(item => {
         return item.groupType == a;
       });
-      // console.log(obj);
+      //
 
       // 默认赋值最大值
       this.set_warning_form.tMax = obj[0].tMax;
@@ -252,7 +269,7 @@ export default {
 
       // 响应数据变化
       this.set_warning_form = { ...this.set_warning_form };
-      // console.log(obj);
+      //
     },
 
     // 点击报警设置按钮
@@ -267,7 +284,7 @@ export default {
       this.set_warning_form.deviceRegion =
         lock || this.region_List[0].deviceRegion;
       // }
-      // console.log(lock);
+      //
 
       // 根据区域号获取元素列表
       var obj = {
@@ -282,25 +299,37 @@ export default {
 
       // 响应数据变化
       this.set_warning_form = { ...this.set_warning_form };
-      // console.log(this.set_warning_form);
-      // console.log(this.region_List[0]);
+      //
+      //
     },
     close_drawer() {
       this.war_full_box = true;
     },
     clear() {
-      console.log(this.gateway_serial);
-      setTimeout(() => {
-        console.log(this.gateway_serial);
-      }, 2000);
+      setTimeout(() => {}, 2000);
     },
     // 选择 网关的报警信息
     async select_gateway_warning(gSerial) {
       this.gateway_serial = gSerial;
-      this.fn();
+      // await this.fn();
+      var obj = {
+        gSerial: this.gateway_serial || this.gserial,
+        page: this.page,
+        pageSize: this.page_size
+      };
+
+      await this.warning_all(obj);
+
+      if (!this.warning_full_msg.datas) {
+        // this.warning_full_msg = {
+        //   datas: []
+        // };
+
+        return this.$Message.warning("暂无报警信息");
+      }
       // this.warning();
 
-      // console.log(123);
+      //
     },
     // 分页改变
     async size_change(a) {
@@ -315,23 +344,30 @@ export default {
     // 发送获取报警信息封装
     async fn() {
       var obj = {
-        gSerial: this.gateway_serial,
+        gSerial: this.gateway_serial || this.gserial,
         page: this.page,
         pageSize: this.page_size
       };
+
       await this.warning_all(obj);
+      if (!this.warning_full_msg.datas) {
+        // this.warning_full_msg = {
+        //   datas: []
+        // };
+        return this.$Message.warning("暂无报警信息");
+      }
     },
     // 点击查看按钮·
 
     async alert_msg(obj) {
-      //   console.log(id);
+      //
       let { data: res } = await this.$http(
         `/alermMsg/setMessageChecked/${obj.id}`
       );
 
-      // console.log(res);
+      //
       this.warning_obj = obj;
-      // console.log(this.warning_obj);
+      //
       this.war_msg_box = true;
 
       this.warning();
@@ -350,12 +386,18 @@ export default {
       };
 
       this.warning_all(obj);
-      console.log(this.warning_full_msg);
+      this.loading_table = false;
 
       // this.warning_all({})
     },
-    one_data() {
-      this.warning();
+    async one_data() {
+      await this.warning();
+      if (!this.warning_data.datas) {
+        this.loading = true;
+
+        return this.$Message.warning("该网关暂无报警信息查看");
+      }
+      this.loading = false;
     }
   }
 };
@@ -364,7 +406,7 @@ export default {
 <style lang="less" scoped>
 .warning_ul {
   p {
-    color: #8b8989;
+    color: #cfcbcb;
     // padding: 15px 0px;
   }
 }

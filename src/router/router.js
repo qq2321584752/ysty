@@ -1,22 +1,22 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './../views/Home.vue'
-import login from './../views/login.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "./../views/Home.vue";
+import login from "./../views/login.vue";
 
-Vue.use(Router)
+Vue.use(VueRouter);
 
-export default new Router({
-  mode: 'history',
+export default new VueRouter({
+  // mode: "history",
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'login',
+      path: "/",
+      name: "login",
       component: login
     },
     {
-      path: '/Home',
-      name: 'Home',
+      path: "/main",
+      // name: "home",
       component: Home
       // route level code-splitting
       // this generates a separate chunk (about.[hash].js) for this route
@@ -26,4 +26,4 @@ export default new Router({
       // }
     }
   ]
-})
+});

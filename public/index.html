@@ -1,32 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <!-- 强制Chromium内核，作用于360浏览器、QQ浏览器等国产双核浏览器： -->
+    <meta name="renderer" content="webkit" />
+    <!-- 强制Chromium内核，作用于其他双核浏览器： -->
+    <meta name="force-rendering" content="webkit" />
+    <!-- 如果有安装 Google Chrome Frame 插件则强制为Chromium内核，否则强制本机支持的最高版本IE内核，作用于IE浏览器： -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-  <title>vue-test</title>
-  <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css" />
-  <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
-</head>
+    <title>"云上田野"智能农业管理平台</title>
+    <link
+      rel="stylesheet"
+      href="https://cache.amap.com/lbs/static/main1119.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"
+    />
+  </head>
 
-<body>
-  <noscript>
-    <strong>We're sorry but vue-test doesn't work properly without JavaScript enabled. Please enable it to
-      continue.</strong>
-  </noscript>
-  <div id="app"></div>
-  <!-- built files will be auto injected -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.js"
-    integrity="sha256-KF809ZKW6cou/JAf3GRVqAH0cgWjdLbjld5Z1Nxzfv8=" crossorigin="anonymous"></script>
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but vue-test doesn't work properly without JavaScript
+        enabled. Please enable it to continue.</strong
+      >
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.2.1/echarts.js"
+      integrity="sha256-KF809ZKW6cou/JAf3GRVqAH0cgWjdLbjld5Z1Nxzfv8="
+      crossorigin="anonymous"
+    ></script>
 
+    <script
+      type="text/javascript"
+      src="https://a.amap.com/jsapi_demos/static/resource/js/tiantan.js"
+    ></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.10&key=0dbc3094de125a78dfd3f0b86a95a929&plugin=Map3D,ElasticMarker"></script>
+    <script
+      type="text/javascript"
+      src="https://a.amap.com/jsapi_demos/static/resource/js/tiantan.js"
+    ></script>
+    <script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
 
-  <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/resource/js/tiantan.js"></script>
-  <script
-    src="https://webapi.amap.com/maps?v=1.4.10&key=0dbc3094de125a78dfd3f0b86a95a929&plugin=Map3D,ElasticMarker"></script>
-  <script type="text/javascript" src="https://a.amap.com/jsapi_demos/static/resource/js/tiantan.js"></script>
-  <script src="https://cache.amap.com/lbs/static/es5.min.js"></script>
-</body>
+    <!-- 百度云解析视频 -->
+    <!-- <script src="https://cdn.bdstatic.com/jwplayer/latest/cyberplayer.js"></script> -->
+    <!-- <script
+      type="text/javascript"
+      src="https://cache.amap.com/lbs/static/addToolbar.js"
+    ></script> -->
+    <!-- 播放器 -->
+    <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.min.js"></script>
 
+    <!-- <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script> -->
+    <!-- cdn引入 -->
+    <script src="https://cdn.bootcss.com/vue/2.5.20/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.0.1/vue-router.min.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/vuex/3.1.1/vuex.min.js"></script> -->
+    <!-- <script src="https://unpkg.com/vuex@3.0.1/dist/vuex.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.min.js"></script>
+    <!-- <script src="https://cdn.bootcss.com/echarts/4.2.1/echarts.min.js"></script> -->
+  </body>
 </html>
