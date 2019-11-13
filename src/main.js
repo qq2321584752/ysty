@@ -6,7 +6,10 @@ import iView from "iview";
 import axios from "axios";
 import VueJsonp from "vue-jsonp";
 import "iview/dist/styles/iview.css";
+
 Vue.use(iView);
+// console.log(123);
+
 Vue.use(VueJsonp);
 
 import "./registerServiceWorker";
